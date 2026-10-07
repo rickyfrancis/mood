@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# mood
 
-## Getting Started
+A private journal built with Next.js. Write entries, have them saved as you
+type, and come back to them later.
 
-First, run the development server:
+## What it does
+
+- Write and edit journal entries
+- Entries save automatically while you type, so there is no save button
+- Each entry has its own page
+- Sign in and sign up handled by Clerk
+- New users land on a setup route that creates their record before the dashboard
+
+## Stack
+
+| Area | Choice |
+| --- | --- |
+| Framework | Next.js, App Router |
+| Language | TypeScript |
+| Database | Prisma |
+| Auth | Clerk |
+| Styling | Tailwind |
+| Autosave | react-autosave |
+
+## Structure
+
+- `app/(dashboard)/journal` lists entries, `journal/[id]` is a single entry
+- `app/api/journal` holds the create and update routes
+- `app/new-user` runs once after sign up to create the user record
+- `utils/` holds the database client, auth helpers and API helpers
+
+## Running it locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp example.env .env
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Fill in the values:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` and `CLERK_SECRET_KEY` from a Clerk app
+- `DATABASE_URL` for your database
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Then:
 
-## Learn More
+```bash
+npx prisma migrate dev
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Status
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+The journal works. There is a `utils/ai.ts` file that is currently empty: the
+original plan was to analyse entries and show mood over time, and that part was
+never built. Treat this as a journal app, not an AI one.
